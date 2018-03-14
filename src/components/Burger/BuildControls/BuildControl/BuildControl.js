@@ -1,14 +1,15 @@
-import React from 'react';
-import { Button } from 'semantic-ui-react';
-import "./build-control-addition.css";
+import React, { Fragment } from 'react';
+import { Label, Button } from 'semantic-ui-react';
 
-const BuildControl = () => {
+const BuildControl = (props) => {
   return (
-    <div className="BuildControl">
-      <div className="Label">{props.label}</div>
-      <Button size="mini">Less</Button>
-      <Button size="mini">More</Button>
-    </div>
+    <Fragment>
+      <Label>{props.label}</Label>
+      <Button.Group>
+        <Button basic icon="minus" />
+        <Button basic icon="plus" />
+      </Button.Group>
+    </Fragment>
   )
 };
 
