@@ -6,8 +6,8 @@ const BuildControl = (props) => {
     <Fragment>
       <Label>{props.label}</Label>
       <Button.Group>
-        <Button basic icon="minus" />
-        <Button basic icon="plus" />
+        <Button basic icon="minus" onClick={props.removed} disabled={props.disabled} />
+        <Button basic icon="plus" onClick={props.added} />
       </Button.Group>
     </Fragment>
   )
