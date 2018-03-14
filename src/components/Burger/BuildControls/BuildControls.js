@@ -1,6 +1,7 @@
 import React from 'react'
 import BuildControl from './BuildControl/BuildControl';
 import "./BuildControls.css";
+import { Button } from 'semantic-ui-react';
 
 const controls = [
   {label: 'Salad', type: 'salad'},
@@ -22,6 +23,7 @@ const BuildControls = (props) => {
             removed={() => props.ingredientRemoved(control.type)} 
             disabled={props.disabled[control.type]} />)
       }
+      <Button disabled={!props.purchasable}>Order Now</Button>
     </div>
   )
 }

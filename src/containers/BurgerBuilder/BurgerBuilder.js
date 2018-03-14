@@ -18,6 +18,14 @@ class BurgerBuilder extends Component {
             meat: 0,
         },
         totalPrice: 4,
+        purchasable: false
+    }
+
+    updatePurchasableState(ingredients) {
+        // the burger is purchasable if any ingredient has a quantity > 0.
+        const purchasable = 
+            Object.keys(ingredients).some(name => ingredients[name] > 0);
+        this.setState({purchasable: purchasable});
     }
 
     addIngredient = (type) => {
@@ -26,6 +34,7 @@ class BurgerBuilder extends Component {
         this.setState({ingredients: newIngredients});
         const newPrice = this.state.totalPrice + INGREDIENT_PRICES[type];
         this.setState({ totalPrice: newPrice});
+        this.updatePurchasableState(newIngredients);
     }
 
     removeIngredient = (type) => {
@@ -37,6 +46,11 @@ class BurgerBuilder extends Component {
         this.setState({ ingredients: newIngredients });
         const newPrice = this.state.totalPrice - INGREDIENT_PRICES[type];
         this.setState({ totalPrice: newPrice });
+        this.updatePurchasableState(newIngredients);
+    }
+
+    order = () => {
+
     }
 
     render() { 
@@ -44,6 +58,7 @@ class BurgerBuilder extends Component {
         for (let key in disabledInfo) {
             disabledInfo[key] = disabledInfo[key] <= 0;
         }
+        console.log(this.state.purchasable);
         return (  
             <Fragment>
                 <Burger ingredients={this.state.ingredients} />
@@ -51,7 +66,8 @@ class BurgerBuilder extends Component {
                     ingredientAdded={this.addIngredient}
                     ingredientRemoved={this.removeIngredient} 
                     disabled={disabledInfo} 
-                    price={this.state.totalPrice}/>
+                    price={this.state.totalPrice}
+                    purchasable={this.state.purchasable} />
             </Fragment>
         );
     }
