@@ -1,5 +1,5 @@
-import React, { Fragment } from 'react'
-import { Button } from 'semantic-ui-react';
+import React from 'react'
+import { Button, Modal } from 'semantic-ui-react';
 
 const OrderSummary = (props) => {
   const ingredientSummary =
@@ -9,18 +9,27 @@ const OrderSummary = (props) => {
       </li>
     );
   return (
-    <Fragment>
-      <h3>Your Order</h3>
-      <p>A delicious burger with the following ingredients:</p>
-      <ul>
-        {ingredientSummary}
-      </ul>
-      <p><strong>Total price: ${ props.price.toFixed(2)}</strong></p>
-      <p>Continue to checkout</p>
-      <Button negative onClick={props.purchaseCanceled}>Cancel</Button>
-      <Button positive onClick={props.purchaseContinued}>Continue</Button>
-    </Fragment>
-  )
+    <Modal 
+      open={props.purchasing}
+      onClose={props.purchaseCanceled}
+      trigger={
+        <Button disabled={!props.purchasable} onClick={props.order}>
+          Order Now
+        </Button>}>
+      <Modal.Header>Your Order</Modal.Header>
+      <Modal.Content>
+        <Modal.Description>
+          <p>A delicious burger with the following ingredients:</p>
+          {ingredientSummary}
+          <p>Continue to checkout?</p>
+        </Modal.Description>
+      </Modal.Content>
+      <Modal.Actions>
+        <Button negative onClick={props.purchaseCanceled}>Cancel</Button>
+        <Button positive onClick={props.purchaseContinued}>Continue</Button>
+      </Modal.Actions>
+    </Modal>
+  );
 }
 
 export default OrderSummary
