@@ -1,6 +1,8 @@
 import React, { Component, Fragment } from 'react';
 import Burger from "../../components/Burger/Burger";
 import BuildControls from '../../components/Burger/BuildControls/BuildControls';
+import Modal from '../../components/UI/Modal/Modal';
+import OrderSummary from '../../components/Burger/OrderSummary/OrderSummary';
 
 const INGREDIENT_PRICES = {
     salad: 0.5,
@@ -12,14 +14,20 @@ const INGREDIENT_PRICES = {
 class BurgerBuilder extends Component {
     state = {
         ingredients: {
-            salad: 0,
+            salad: 1,
             bacon: 0,
             cheese: 0,
             meat: 0,
         },
         totalPrice: 4,
-        purchasable: false
+        purchasable: false,
+        purchasing: false,
+    };
+
+    componentDidMount = () => {
+      this.updatePurchasableState(this.state.ingredients);
     }
+    
 
     updatePurchasableState(ingredients) {
         // the burger is purchasable if any ingredient has a quantity > 0.
@@ -49,16 +57,15 @@ class BurgerBuilder extends Component {
         this.updatePurchasableState(newIngredients);
     }
 
-    order = () => {
-
-    }
+    order = () => this.setState({purchasing: true});
+    cancelOrder = () => this.setState({purchasing: false})
+    continueOrder = () => alert('You continue!')
 
     render() { 
         const disabledInfo = {...this.state.ingredients};
         for (let key in disabledInfo) {
             disabledInfo[key] = disabledInfo[key] <= 0;
-        }
-        console.log(this.state.purchasable);
+        }        
         return (  
             <Fragment>
                 <Burger ingredients={this.state.ingredients} />
@@ -67,7 +74,18 @@ class BurgerBuilder extends Component {
                     ingredientRemoved={this.removeIngredient} 
                     disabled={disabledInfo} 
                     price={this.state.totalPrice}
-                    purchasable={this.state.purchasable} />
+                    purchasable={this.state.purchasable} 
+                    order={this.order} />
+                <Modal 
+                    show={this.state.purchasing} 
+                    modalClosed={this.cancelOrder}>
+                    <OrderSummary 
+                        price={this.state.totalPrice}
+                        ingredients={this.state.ingredients} 
+                        purchaseCanceled={this.cancelOrder}
+                        purchaseContinued={this.continueOrder}
+                        />
+                </Modal>
             </Fragment>
         );
     }
