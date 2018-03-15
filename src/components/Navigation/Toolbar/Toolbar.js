@@ -6,8 +6,8 @@ import NavigationItems from '../NavigationItems/NavigationItems';
 const Toolbar = (props) => {
   return (
     <Menu>
-      <Menu.Item>
-        <Logo size="mini" clicked={props.toggleSideDrawer} />
+      <Menu.Item onClick={props.toggleSideDrawer}>
+        <Logo size="mini" />
       </Menu.Item>
       <Menu.Menu position="right">
         <NavigationItems activeItem="builder" />

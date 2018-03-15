@@ -7,8 +7,7 @@ const Logo = (props) => {
     <Image 
       size='mini'
       src={burgerLogo} 
-      alt="burger-logo" 
-      onClick={props.clicked} />
+      alt="burger-logo" />
   )
 }
 
