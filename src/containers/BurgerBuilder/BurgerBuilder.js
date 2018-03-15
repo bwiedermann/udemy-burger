@@ -20,8 +20,9 @@ class BurgerBuilder extends Component {
             meat: 0,
         },
         totalPrice: 4,
-        purchasable: false
-    }
+        purchasable: false,
+        purchasing: false,
+    };
 
     updatePurchasableState(ingredients) {
         // the burger is purchasable if any ingredient has a quantity > 0.
@@ -51,15 +52,13 @@ class BurgerBuilder extends Component {
         this.updatePurchasableState(newIngredients);
     }
 
-    order = () => {
-
-    }
+    order = () => this.setState({purchasing: true});
 
     render() { 
         const disabledInfo = {...this.state.ingredients};
         for (let key in disabledInfo) {
             disabledInfo[key] = disabledInfo[key] <= 0;
-        }
+        }        
         return (  
             <Fragment>
                 <Burger ingredients={this.state.ingredients} />
@@ -68,8 +67,9 @@ class BurgerBuilder extends Component {
                     ingredientRemoved={this.removeIngredient} 
                     disabled={disabledInfo} 
                     price={this.state.totalPrice}
-                    purchasable={this.state.purchasable} />
-                <Modal>
+                    purchasable={this.state.purchasable} 
+                    order={this.order} />
+                <Modal show={this.state.purchasing}>
                     <OrderSummary ingredients={this.state.ingredients} />
                 </Modal>
             </Fragment>
