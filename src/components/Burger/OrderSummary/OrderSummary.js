@@ -1,4 +1,5 @@
 import React, { Fragment } from 'react'
+import { Button } from 'semantic-ui-react';
 
 const OrderSummary = (props) => {
   const ingredientSummary =
@@ -15,6 +16,8 @@ const OrderSummary = (props) => {
         {ingredientSummary}
       </ul>
       <p>Continue to checkout</p>
+      <Button negative>Cancel</Button>
+      <Button positive>Continue</Button>
     </Fragment>
   )
 }
