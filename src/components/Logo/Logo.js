@@ -4,7 +4,11 @@ import burgerLogo from "../../assets/images/burger-logo.png";
 
 const Logo = (props) => {
   return (
-    <Image size={props.size} src={burgerLogo} alt="burger-logo" />
+    <Image 
+      size='mini'
+      src={burgerLogo} 
+      alt="burger-logo" 
+      onClick={props.clicked} />
   )
 }
 
