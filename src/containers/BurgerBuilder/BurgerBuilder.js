@@ -1,7 +1,6 @@
 import React, { Component, Fragment } from 'react';
 import Burger from "../../components/Burger/Burger";
 import BuildControls from '../../components/Burger/BuildControls/BuildControls';
-import Modal from '../../components/UI/Modal/Modal';
 import OrderSummary from '../../components/Burger/OrderSummary/OrderSummary';
 
 const INGREDIENT_PRICES = {
@@ -57,7 +56,7 @@ class BurgerBuilder extends Component {
         this.updatePurchasableState(newIngredients);
     }
 
-    order = () => this.setState({purchasing: true});
+    order = () => this.setState({purchasing: true})
     cancelOrder = () => this.setState({purchasing: false})
     continueOrder = () => alert('You continue!')
 
@@ -75,17 +74,16 @@ class BurgerBuilder extends Component {
                     disabled={disabledInfo} 
                     price={this.state.totalPrice}
                     purchasable={this.state.purchasable} 
-                    order={this.order} />
-                <Modal 
-                    show={this.state.purchasing} 
-                    modalClosed={this.cancelOrder}>
-                    <OrderSummary 
-                        price={this.state.totalPrice}
-                        ingredients={this.state.ingredients} 
-                        purchaseCanceled={this.cancelOrder}
-                        purchaseContinued={this.continueOrder}
-                        />
-                </Modal>
+                    order={this.order} />            
+                <OrderSummary 
+                    price={this.state.totalPrice}
+                    ingredients={this.state.ingredients} 
+                    purchasable={this.state.purchasable}
+                    purchasing={this.state.purchasing}
+                    order={this.order}
+                    purchaseCanceled={this.cancelOrder}
+                    purchaseContinued={this.continueOrder}
+                    />
             </Fragment>
         );
     }
