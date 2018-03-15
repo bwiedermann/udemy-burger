@@ -21,6 +21,7 @@ const OrderSummary = (props) => {
         <Modal.Description>
           <p>A delicious burger with the following ingredients:</p>
           {ingredientSummary}
+          <p><strong>Total price:</strong> ${props.price.toFixed(2)}</p>
           <p>Continue to checkout?</p>
         </Modal.Description>
       </Modal.Content>
