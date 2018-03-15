@@ -58,7 +58,6 @@ class BurgerBuilder extends Component {
         for (let key in disabledInfo) {
             disabledInfo[key] = disabledInfo[key] <= 0;
         }
-        console.log(this.state.purchasable);
         return (  
             <Fragment>
                 <Burger ingredients={this.state.ingredients} />
