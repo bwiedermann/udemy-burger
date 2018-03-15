@@ -1,13 +1,30 @@
-import React, { Fragment } from 'react';
+import React, { Component } from 'react';
+import { Sidebar } from 'semantic-ui-react';
 import './Layout.css';
+import Toolbar from '../Navigation/Toolbar/Toolbar';
+import Sidedrawer from '../Navigation/Sidedrawer/Sidedrawer';
 
-const Layout = (props) => (
-    <Fragment>
-        <div>Toolbar, Sidedrawer, Backdrop</div>
-        <main>
-            {props.children}
-        </main>
-    </Fragment>
-);
+class Layout extends Component {
+    state = {
+        sideDrawerOpen: false,
+    }
+
+    toggleSideDrawer = () => 
+        this.setState({sideDrawerOpen: !this.state.sideDrawerOpen})
+
+    render() {
+        return (
+            <Sidebar.Pushable>
+                <Sidedrawer visible={this.state.sideDrawerOpen} />
+                <Sidebar.Pusher>
+                    <Toolbar toggleSideDrawer={this.toggleSideDrawer} />
+                    <main>
+                        {this.props.children}
+                    </main>
+                </Sidebar.Pusher>
+            </Sidebar.Pushable>
+        );
+    }
+}
 
 export default Layout;
