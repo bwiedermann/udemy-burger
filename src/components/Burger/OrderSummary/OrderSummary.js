@@ -1,5 +1,5 @@
 import React, { Component } from 'react'
-import { Button, Modal } from 'semantic-ui-react';
+import { Button, Modal, Loader, Dimmer } from 'semantic-ui-react';
 
 class OrderSummary extends Component {
 
@@ -7,7 +7,8 @@ class OrderSummary extends Component {
     // update the component only if the button should be enabled or
     // if we're going to show the order summary modal
     return (nextProps.purchasing !== this.props.purchasing) ||
-      (nextProps.purchasable !== this.props.purchasable);
+      (nextProps.purchasable !== this.props.purchasable) ||
+      (nextProps.loading !== this.props.loading);
   }
 
   render() {
@@ -28,6 +29,9 @@ class OrderSummary extends Component {
         <Modal.Header>Your Order</Modal.Header>
         <Modal.Content>
           <Modal.Description>
+            <Dimmer active={this.props.loading} inverted>
+              <Loader>Ordering</Loader>
+            </Dimmer>
             <p>A delicious burger with the following ingredients:</p>
             {ingredientSummary}
             <p><strong>Total price:</strong> ${this.props.price.toFixed(2)}</p>
