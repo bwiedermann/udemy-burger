@@ -22,6 +22,7 @@ class BurgerBuilder extends Component {
         totalPrice: 4,
         purchasable: false,
         purchasing: false,
+        loading: false,
     };
 
     componentDidMount = () => {
@@ -62,6 +63,7 @@ class BurgerBuilder extends Component {
 
     continueOrder = () => {
         //alert('You continue!')
+        this.setState({loading: true})
         const order = {
             ingredients: this.state.ingredients,
             price: this.state.totalPrice,  // should calculate on server
@@ -73,15 +75,18 @@ class BurgerBuilder extends Component {
             }
         }
         axios.post('/orders.json', order)
-             .then(response => console.log(response))
-             .catch(error => console.log(error));
+             .then(response => this.setState({loading: false, purchasing: false}))
+             .catch(error => {
+                 this.setState({loading: false, purchasing: false});
+                 console.log(error);
+             });
     }
 
     render() { 
         const disabledInfo = {...this.state.ingredients};
         for (let key in disabledInfo) {
             disabledInfo[key] = disabledInfo[key] <= 0;
-        }        
+        }
         return (  
             <Fragment>
                 <Burger ingredients={this.state.ingredients} />
@@ -92,15 +97,16 @@ class BurgerBuilder extends Component {
                     price={this.state.totalPrice}
                     purchasable={this.state.purchasable} 
                     order={this.order} />            
-                <OrderSummary 
+                <OrderSummary
                     price={this.state.totalPrice}
-                    ingredients={this.state.ingredients} 
+                    ingredients={this.state.ingredients}
                     purchasable={this.state.purchasable}
                     purchasing={this.state.purchasing}
                     order={this.order}
                     purchaseCanceled={this.cancelOrder}
                     purchaseContinued={this.continueOrder}
-                    />
+                    loading={this.state.loading}
+                />
             </Fragment>
         );
     }
