@@ -1,14 +1,15 @@
 import React, { Fragment } from 'react'
 import { Menu } from 'semantic-ui-react';
+import { NavLink } from 'react-router-dom';
 
 const NavigationItems = (props) => {
   return (
     <Fragment>
-      <Menu.Item active={props.activeItem === 'builder'} href="/">
+      <Menu.Item as={NavLink} exact to="/">
         Burger Builder
       </Menu.Item>
-      <Menu.Item active={props.active === 'checkout'} href="/">
-        Checkout
+      <Menu.Item as={NavLink} exact to="/orders">
+        Orders
       </Menu.Item>
     </Fragment>
   )
