@@ -1,5 +1,5 @@
 import React, { Component } from 'react'
-import { Form, Card } from 'semantic-ui-react';
+import { Form, Card, Loader, Dimmer } from 'semantic-ui-react';
 import axios from '../../../axios-orders';
 
 export class ContactData extends Component {
@@ -39,6 +39,9 @@ export class ContactData extends Component {
   render() {
     return (
       <Card>
+        <Dimmer active={this.state.loading} inverted>
+          <Loader>Ordering</Loader>
+        </Dimmer>
         <h4>Enter contact data</h4>  
         <Form>
           <Form.Input label='Name' type='text' placeholder='Your Name' />
