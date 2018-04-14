@@ -32,10 +32,10 @@ const computePrice = (ingredients) => {
  * Adds or removes an ingredient
  * @param {*} state the current state
  * @param {*} ingredient the name of the ingredient to add or remove
- * @param {*} multiplier a number n. If n is positive, will add n ingredients;
- *            if n i negative, will remove n ingredients
+ * @param {*} num a number n. If n is positive, will add n ingredients;
+ *            if n is negative, will remove n ingredients
  */
-const changeIngredient = (state, ingredient, multiplier) => {
+const changeIngredient = (state, ingredient, num) => {
   // error handling
   if (state.ingredients[ingredient] === undefined) {
     return state;
@@ -43,7 +43,7 @@ const changeIngredient = (state, ingredient, multiplier) => {
 
   // change the ingredient
   const newIngredients = { ...state.ingredients };
-  const newIngredientQuantity = newIngredients[ingredient] + multiplier;
+  const newIngredientQuantity = newIngredients[ingredient] + num;
   newIngredients[ingredient] = Math.max(0, newIngredientQuantity);  // can't have negative ingredients
 
   // compute a new price
@@ -57,13 +57,14 @@ const changeIngredient = (state, ingredient, multiplier) => {
 export default (state = initialState, action) => {
   switch (action.type) {
 
-  case actions.ADD_INGREDIENT:
-    return changeIngredient(state, action.ingredient, 1);
+    case actions.ADD_INGREDIENT:
+      return changeIngredient(state, action.ingredient, 1);
 
-  case actions.REMOVE_INGREDIENT:
-    return changeIngredient(state, action.ingredient, -1);
+    case actions.REMOVE_INGREDIENT:
+      return changeIngredient(state, action.ingredient, -1);
 
-  default:
-    return state
+    default:
+      return state
+
   }
 }
