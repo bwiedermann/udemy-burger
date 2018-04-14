@@ -9,11 +9,11 @@ import registerServiceWorker from './registerServiceWorker';
 import { BrowserRouter } from 'react-router-dom';
 
 const app = (
-  <BrowserRouter>
-    <Provider store={createStore(rootReducer)}>
-      <App />
-    </Provider>
-  </BrowserRouter>
+  <Provider store={createStore(rootReducer)}>
+    <BrowserRouter>
+        <App />
+    </BrowserRouter>
+  </Provider>
 )
 
 ReactDOM.render(app, document.getElementById('root'));

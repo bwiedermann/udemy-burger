@@ -26,6 +26,7 @@ class BurgerBuilder extends Component {
     //             this.updatePurchasableState(response.data);
     //         })
     //         .catch(error => this.setState({error: true}));
+    this.updatePurchasableState(this.props.ingredients);
     }
 
     componentWillReceiveProps(nextProps) {
