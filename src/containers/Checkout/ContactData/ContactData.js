@@ -2,6 +2,7 @@ import React, { Component } from 'react'
 import { Form, Card, Loader, Dimmer } from 'semantic-ui-react';
 import axios from '../../../axios-orders';
 import withRouter from 'react-router-dom/withRouter';
+import $ from 'jquery';
 
 export class ContactData extends Component {
   
@@ -10,42 +11,49 @@ export class ContactData extends Component {
       name: {
         elementConfig: {
           type: 'text',
+          pattern: ".+",
           placeholder: 'Your name',          
-          required: false,
+          required: true,
         },
-        value: ''
+        value: 'Fake customer'
       },
       address: {
         elementConfig: {
           type: 'text',
+          pattern: ".+",
           placeholder: 'Street',          
-          required: false,
+          required: true,
         },
-        value: ''
+        value: '123 Main St.'
       },
       zip: {
         elementConfig: {
-          type: 'number',
+          type: 'text',
+          pattern: "[0-9]{5}",
           placeholder: '',          
-          required: false,
+          required: true,
         },
-        value: ''
+        value: '11111'
       },
       email: {
         elementConfig: {
           type: 'email',
           placeholder: 'a@a.com',          
-          required: false,
+          required: true,
         },
-        value: ''
+        value: 'fake@fake.com'
       },
     },
     loading: false,
   };
 
   orderHandler = (event) => {
+    if (!this.formIsValid()) {
+      return;
+    }
+
     event.preventDefault();
-    
+
     this.setState({loading: true});
     const formData = {};
     for (let formID in this.state.orderForm) {
@@ -67,12 +75,17 @@ export class ContactData extends Component {
          });
   }
 
+  formIsValid = () => $('#ContactForm')[0].reportValidity();
+
   inputChangedHandler = (event, inputIdentifier) => {
     const newForm = {...this.state.orderForm};
     const newItem = { ...newForm[inputIdentifier]};
     newItem.value = event.target.value;
     newForm[inputIdentifier] = newItem;
-    // this.setState({ orderForm: newForm });
+
+    this.setState({ 
+      orderForm: newForm,
+    });
   }
 
   render() {
@@ -85,7 +98,8 @@ export class ContactData extends Component {
           key={key} 
           label={key}
           onChange={(event) => this.inputChangedHandler(event, key)}
-          {...formItem.elementConfig} />
+          {...formItem.elementConfig} 
+          value={value} />
       );
     }
     return (
@@ -94,9 +108,12 @@ export class ContactData extends Component {
           <Loader>Ordering</Loader>
         </Dimmer>
         <h4>Enter contact data</h4>  
-        <Form>
+        <Form id="ContactForm">
           { formItems }
-          <Form.Button onClick={this.orderHandler} type='submit' content='Order' />
+          <Form.Button 
+            onClick={this.orderHandler} 
+            type='submit' 
+            content='Order' />
         </Form>
       </Card>
     )
