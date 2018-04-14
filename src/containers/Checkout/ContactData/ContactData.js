@@ -1,6 +1,7 @@
 import React, { Component } from 'react'
 import { Form, Card, Loader, Dimmer } from 'semantic-ui-react';
 import axios from '../../../axios-orders';
+import withRouter from 'react-router-dom/withRouter';
 
 export class ContactData extends Component {
   
@@ -29,7 +30,10 @@ export class ContactData extends Component {
         }
     }
     axios.post('/orders.json', order)
-         .then(response => this.setState({loading: false}))
+         .then(response => {
+           this.setState({loading: false});
+           this.props.history.push('/');
+         })
          .catch(error => {
              this.setState({loading: false});
              console.log('Error ' + error);
@@ -56,4 +60,4 @@ export class ContactData extends Component {
 
 }
 
-export default ContactData;
+export default withRouter(ContactData);
