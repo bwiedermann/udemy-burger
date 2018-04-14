@@ -1,5 +1,6 @@
 import React, { Component } from 'react'
 import { Form, Card, Loader, Dimmer } from 'semantic-ui-react';
+import { connect } from 'react-redux';
 import axios from '../../../axios-orders';
 import withRouter from 'react-router-dom/withRouter';
 import $ from 'jquery';
@@ -121,4 +122,9 @@ export class ContactData extends Component {
 
 }
 
-export default withRouter(ContactData);
+const mapStateToProps = (state) => ({
+  ingredients: state.ingredients,
+  totalPrice: state.totalPrice,
+})
+
+export default connect(mapStateToProps)(withRouter(ContactData));
