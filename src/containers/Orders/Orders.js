@@ -2,6 +2,7 @@ import React, { Component, Fragment } from 'react'
 import Order from './Order';
 import { Dimmer, Loader } from 'semantic-ui-react';
 import axios from '../../axios-orders';
+import withErrorHandler from '../../components/withErrorHandler/withErrorHandler';
 
 export class Orders extends Component {
   state = {
@@ -34,7 +35,6 @@ export class Orders extends Component {
   }
 
   render() {
-    console.log(this.state.orders);
     return (
       <Fragment>
         <Dimmer active={this.state.loading} inverted>
@@ -51,4 +51,4 @@ export class Orders extends Component {
   }
 }
 
-export default Orders;
+export default withErrorHandler(Orders, axios);
