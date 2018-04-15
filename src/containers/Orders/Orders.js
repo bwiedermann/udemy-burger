@@ -3,6 +3,8 @@ import Order from './Order';
 import { Dimmer, Loader } from 'semantic-ui-react';
 import axios from '../../axios-orders';
 import withErrorHandler from '../../components/withErrorHandler/withErrorHandler';
+import * as actions from '../../store/actions/'; 
+import { connect } from 'react-redux';
 
 export class Orders extends Component {
   state = {
@@ -11,37 +13,17 @@ export class Orders extends Component {
   };
 
   componentDidMount() {
-    this.loadOrders();
-  }
-
-  loadOrders = () => {
-    axios.get('/orders.json')
-      .then(response => {
-        const fetchedOrders = [];
-        for (let key in response.data) {
-          fetchedOrders.push(
-            {
-              ...response.data[key],
-              id: key,
-            }
-          );
-        }
-        this.setState({ orders: fetchedOrders || [], loading: false });
-      })
-      .catch(error => {
-        this.setState({ loading: false });
-        console.log('Error ' + error);
-      });
+    this.props.onFetchOrders();
   }
 
   render() {
     return (
       <Fragment>
-        <Dimmer active={this.state.loading} inverted>
+        <Dimmer active={this.props.loading} inverted>
           <Loader>Loading orders</Loader>
         </Dimmer>
         {
-          this.state.orders.map(order => 
+          this.props.orders.map(order => 
             <Order key={order.id} 
                    ingredients={order.ingredients} 
                    price={order.price} />)
@@ -51,4 +33,13 @@ export class Orders extends Component {
   }
 }
 
-export default withErrorHandler(Orders, axios);
+const mapStateToProps = (state) => ({
+  orders: state.order.orders,
+  loading: state.order.loading,
+});
+
+const mapDispatchToProps = (dispatch) => ({
+  onFetchOrders: () => actions.fetchOrders(),
+});
+
+export default connect(mapStateToProps, mapDispatchToProps)(withErrorHandler(Orders, axios));
