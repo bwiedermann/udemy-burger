@@ -14,19 +14,13 @@ class BurgerBuilder extends Component {
     state = {
         purchasable: false,
         purchasing: false,
-        loading: false,
-        error: false
     };
 
-    componentDidMount = () => {
-        // TODO
-    //   axios.get('https://udemy-burger-d490e.firebaseio.com/ingredients.json')
-    //         .then(response => {
-    //             this.setState({ingredients: response.data});
-    //             this.updatePurchasableState(response.data);
-    //         })
-    //         .catch(error => this.setState({error: true}));
-    this.updatePurchasableState(this.props.ingredients);
+    componentDidMount() {
+        if (!this.props.ingredients) {
+            this.props.onInitIngredients();
+        }
+        this.updatePurchasableState(this.props.ingredients);
     }
 
     componentWillReceiveProps(nextProps) {
@@ -70,13 +64,12 @@ class BurgerBuilder extends Component {
                 order={this.order}
                 purchaseCanceled={this.cancelOrder}
                 purchaseContinued={this.continueOrder}
-                loading={this.state.loading}
             />
           </Fragment>);
         if (this.props.ingredients === null) {
             burger = <Loader active />
         }
-        if (this.state.error) {
+        if (this.props.error) {
             burger = 
             <Message negative size = 'massive'>
                 <Message.Header>
@@ -99,9 +92,11 @@ class BurgerBuilder extends Component {
 const mapStateToProps = (state) => ({
   ingredients: state.ingredients,
   totalPrice: state.totalPrice,
+  error: state.error,
 });
 
 const mapDispatchToProps = (dispatch) => ({
+    onInitIngredients: () => dispatch(actions.initIngredients()),
     ingredientAdded: (type) => dispatch(actions.addIngredientAction(type)),
     ingredientRemoved: (type) => dispatch(actions.removeIngredientAction(type)),
 });

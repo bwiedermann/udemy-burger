@@ -1,14 +1,15 @@
-import { ADD_INGREDIENT, REMOVE_INGREDIENT } from '../actions/types';
+import {
+  ADD_INGREDIENT,
+  REMOVE_INGREDIENT,
+  SET_INGREDIENTS,
+  FETCH_INGREDIENTS_FAILED
+} from '../actions/types';
 
 /** we store ingredients and the total price */
 const initialState = {
-  ingredients: {
-    salad:  0,
-    cheese: 0,
-    meat:   0,
-    bacon:  0,
-  },
+  ingredients: null,
   totalPrice: 4,
+  error: false,
 };
 
 /** the prices for each ingredient */
@@ -56,6 +57,12 @@ const changeIngredient = (state, ingredient, num) => {
 /** the reducer */
 export default (state = initialState, action) => {
   switch (action.type) {
+
+    case SET_INGREDIENTS:
+      return { ...state, ingredients: action.ingredients, error: false };
+
+    case FETCH_INGREDIENTS_FAILED:
+       return { ...state, error: true };
 
     case ADD_INGREDIENT:
       return changeIngredient(state, action.ingredient, 1);
