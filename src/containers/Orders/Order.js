@@ -9,7 +9,7 @@ const Order = (props) => {
   return (
     <Card>
       <h4>Ingredients</h4>
-      { ingredients.map(ingredient => <p>{ingredient}</p>) }
+      { ingredients.map(ingredient => <p key={ingredient}>{ingredient}</p>) }
       <p>Price: <strong>${Number.parseFloat(props.price).toFixed(2)}</strong></p>
     </Card>
   )
