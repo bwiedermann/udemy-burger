@@ -5,7 +5,7 @@ const initialState = {
   purchasing: false,
 }
 
-addOrder = (state, action) => {
+const addOrder = (state, action) => {
   const newOrder = {
     ...action.orderData,
     id: action.orderID,

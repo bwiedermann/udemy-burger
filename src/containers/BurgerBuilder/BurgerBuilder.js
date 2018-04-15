@@ -90,9 +90,9 @@ class BurgerBuilder extends Component {
  * connect component to the store
  *******************************************************************************/
 const mapStateToProps = (state) => ({
-  ingredients: state.ingredients,
-  totalPrice: state.totalPrice,
-  error: state.error,
+  ingredients: state.burgerBuilder.ingredients,
+  totalPrice: state.burgerBuilder.totalPrice,
+  error: state.burgerBuilder.error,
 });
 
 const mapDispatchToProps = (dispatch) => ({
