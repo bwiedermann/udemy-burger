@@ -5,12 +5,12 @@ import {
   FETCH_INGREDIENTS_FAILED } from './types';
 import axios from '../../axios-orders';
 
-export const addIngredientAction = (ingredient) => ({
+export const addIngredient = (ingredient) => ({
   type: ADD_INGREDIENT,
   ingredient: ingredient
 });
 
-export const removeIngredientAction = (ingredient) => ({
+export const removeIngredient = (ingredient) => ({
   type: REMOVE_INGREDIENT,
   ingredient: ingredient
 });
