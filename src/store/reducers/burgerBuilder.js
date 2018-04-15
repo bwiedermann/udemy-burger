@@ -1,14 +1,15 @@
-import * as actions from './actions';
+import {
+  ADD_INGREDIENT,
+  REMOVE_INGREDIENT,
+  SET_INGREDIENTS,
+  FETCH_INGREDIENTS_FAILED
+} from '../actions/types';
 
 /** we store ingredients and the total price */
 const initialState = {
-  ingredients: {
-    salad:  0,
-    cheese: 0,
-    meat:   0,
-    bacon:  0,
-  },
+  ingredients: null,
   totalPrice: 4,
+  error: false,
 };
 
 /** the prices for each ingredient */
@@ -27,6 +28,13 @@ const computePrice = (ingredients) => {
   }
   return price;
 }
+
+const setIngredients = (state, action) => ({
+  ...state,
+  ingredients: action.ingredients,
+  totalPrice: computePrice(action.ingredients),
+  error: false,
+});
 
 /**
  * Adds or removes an ingredient
@@ -57,10 +65,16 @@ const changeIngredient = (state, ingredient, num) => {
 export default (state = initialState, action) => {
   switch (action.type) {
 
-    case actions.ADD_INGREDIENT:
+    case SET_INGREDIENTS:
+      return setIngredients(state, action);
+
+    case FETCH_INGREDIENTS_FAILED:
+       return { ...state, error: true };
+
+    case ADD_INGREDIENT:
       return changeIngredient(state, action.ingredient, 1);
 
-    case actions.REMOVE_INGREDIENT:
+    case REMOVE_INGREDIENT:
       return changeIngredient(state, action.ingredient, -1);
 
     default:

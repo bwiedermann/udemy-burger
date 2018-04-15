@@ -8,25 +8,17 @@ import BuildControls from '../../components/Burger/BuildControls/BuildControls';
 import OrderSummary from '../../components/Burger/OrderSummary/OrderSummary';
 import withErrorHandler from '../../components/withErrorHandler/withErrorHandler';
 
-import * as actions from '../../store/actions';
+import * as actions from '../../store/actions/index';
 
 class BurgerBuilder extends Component {
     state = {
         purchasable: false,
         purchasing: false,
-        loading: false,
-        error: false
     };
 
-    componentDidMount = () => {
-        // TODO
-    //   axios.get('https://udemy-burger-d490e.firebaseio.com/ingredients.json')
-    //         .then(response => {
-    //             this.setState({ingredients: response.data});
-    //             this.updatePurchasableState(response.data);
-    //         })
-    //         .catch(error => this.setState({error: true}));
-    this.updatePurchasableState(this.props.ingredients);
+    componentDidMount() {
+        this.props.onInitIngredients();
+        this.updatePurchasableState(this.props.ingredients);
     }
 
     componentWillReceiveProps(nextProps) {
@@ -45,7 +37,10 @@ class BurgerBuilder extends Component {
 
     order = () => this.setState({purchasing: true})
     cancelOrder = () => this.setState({purchasing: false})
-    continueOrder = () => this.props.history.push('/checkout');
+    continueOrder = () => {
+        this.props.onInitPurchase();
+        this.props.history.push('/checkout');
+    }
 
     render() { 
         const disabledInfo = {...this.props.ingredients};
@@ -70,13 +65,12 @@ class BurgerBuilder extends Component {
                 order={this.order}
                 purchaseCanceled={this.cancelOrder}
                 purchaseContinued={this.continueOrder}
-                loading={this.state.loading}
             />
           </Fragment>);
         if (this.props.ingredients === null) {
             burger = <Loader active />
         }
-        if (this.state.error) {
+        if (this.props.error) {
             burger = 
             <Message negative size = 'massive'>
                 <Message.Header>
@@ -97,13 +91,16 @@ class BurgerBuilder extends Component {
  * connect component to the store
  *******************************************************************************/
 const mapStateToProps = (state) => ({
-  ingredients: state.ingredients,
-  totalPrice: state.totalPrice,
+  ingredients: state.burgerBuilder.ingredients,
+  totalPrice: state.burgerBuilder.totalPrice,
+  error: state.burgerBuilder.error,
 });
 
 const mapDispatchToProps = (dispatch) => ({
-    ingredientAdded: (type) => dispatch(actions.addIngredientAction(type)),
-    ingredientRemoved: (type) => dispatch(actions.removeIngredientAction(type)),
+    onInitIngredients: () => dispatch(actions.initIngredients()),
+    ingredientAdded: (type) => dispatch(actions.addIngredient(type)),
+    ingredientRemoved: (type) => dispatch(actions.removeIngredient(type)),
+    onInitPurchase: () => dispatch(actions.purchaseInit()),
 });
 
 export default connect(mapStateToProps, mapDispatchToProps)(withErrorHandler(BurgerBuilder, axios));

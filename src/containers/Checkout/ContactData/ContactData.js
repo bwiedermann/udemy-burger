@@ -3,7 +3,9 @@ import { Form, Card, Loader, Dimmer } from 'semantic-ui-react';
 import { connect } from 'react-redux';
 import axios from '../../../axios-orders';
 import withRouter from 'react-router-dom/withRouter';
+import withErrorHandler from '../../../components/withErrorHandler/withErrorHandler';
 import $ from 'jquery';
+import * as actions from '../../../store/actions/index';
 
 export class ContactData extends Component {
   
@@ -65,15 +67,8 @@ export class ContactData extends Component {
         price: this.props.totalPrice,  // should calculate on server
         customer: formData,
     }
-    axios.post('/orders.json', order)
-         .then(response => {
-           this.setState({loading: false});
-           this.props.history.push('/');
-         })
-         .catch(error => {
-             this.setState({loading: false});
-             console.log('Error ' + error);
-         });
+
+    this.props.onOrderBurger(order);
   }
 
   formIsValid = () => $('#ContactForm')[0].reportValidity();
@@ -105,7 +100,7 @@ export class ContactData extends Component {
     }
     return (
       <Card>
-        <Dimmer active={this.state.loading} inverted>
+        <Dimmer active={this.props.loading} inverted>
           <Loader>Ordering</Loader>
         </Dimmer>
         <h4>Enter contact data</h4>  
@@ -123,8 +118,14 @@ export class ContactData extends Component {
 }
 
 const mapStateToProps = (state) => ({
-  ingredients: state.ingredients,
-  totalPrice: state.totalPrice,
+  ingredients: state.burgerBuilder.ingredients,
+  totalPrice: state.burgerBuilder.totalPrice,
+  loading: state.order.loading,
 })
 
-export default connect(mapStateToProps)(withRouter(ContactData));
+const mapDispatchToProps = (dispatch) => ({
+  onOrderBurger: (order) => dispatch(actions.purchaseBurger(order)),
+});
+
+
+export default connect(mapStateToProps, mapDispatchToProps)(withRouter(withErrorHandler(ContactData, axios)));
