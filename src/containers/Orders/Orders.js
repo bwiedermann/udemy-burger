@@ -7,11 +7,6 @@ import * as actions from '../../store/actions/';
 import { connect } from 'react-redux';
 
 export class Orders extends Component {
-  state = {
-    orders: [],
-    loading: true,
-  };
-
   componentDidMount() {
     this.props.onFetchOrders();
   }
@@ -26,7 +21,8 @@ export class Orders extends Component {
           this.props.orders.map(order => 
             <Order key={order.id} 
                    ingredients={order.ingredients} 
-                   price={order.price} />)
+                   price={order.price} />
+          )
         }
       </Fragment>
     );
