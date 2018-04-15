@@ -22,3 +22,7 @@ export const purchaseBurger = (order) => (dispatch) => {
     .then(response => dispatch(purchaseBurgerSuccess(response.data.name, order)))
     .catch(error => dispatch(purchaseBurgerFail(error)));
 }
+
+export const purchaseInit = () => ({
+  type: actionTypes.PURCHASE_INIT
+})
