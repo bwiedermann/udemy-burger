@@ -17,9 +17,7 @@ class BurgerBuilder extends Component {
     };
 
     componentDidMount() {
-        if (!this.props.ingredients) {
-            this.props.onInitIngredients();
-        }
+        this.props.onInitIngredients();
         this.updatePurchasableState(this.props.ingredients);
     }
 
