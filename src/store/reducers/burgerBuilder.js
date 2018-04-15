@@ -29,6 +29,13 @@ const computePrice = (ingredients) => {
   return price;
 }
 
+const setIngredients = (state, action) => ({
+  ...state,
+  ingredients: action.ingredients,
+  totalPrice: computePrice(action.ingredients),
+  error: false,
+});
+
 /**
  * Adds or removes an ingredient
  * @param {*} state the current state
@@ -59,7 +66,7 @@ export default (state = initialState, action) => {
   switch (action.type) {
 
     case SET_INGREDIENTS:
-      return { ...state, ingredients: action.ingredients, error: false };
+      return setIngredients(state, action);
 
     case FETCH_INGREDIENTS_FAILED:
        return { ...state, error: true };
