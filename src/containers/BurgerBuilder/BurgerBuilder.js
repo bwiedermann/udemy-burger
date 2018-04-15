@@ -8,7 +8,7 @@ import BuildControls from '../../components/Burger/BuildControls/BuildControls';
 import OrderSummary from '../../components/Burger/OrderSummary/OrderSummary';
 import withErrorHandler from '../../components/withErrorHandler/withErrorHandler';
 
-import * as actions from '../../store/actions';
+import * as actions from '../../store/actions/burgerBuilder';
 
 class BurgerBuilder extends Component {
     state = {

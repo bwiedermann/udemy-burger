@@ -1,5 +1,4 @@
-export const ADD_INGREDIENT     = 'ADD_INGREDIENT';
-export const REMOVE_INGREDIENT  = 'REMOVE_INGREDIENT';
+import { ADD_INGREDIENT, REMOVE_INGREDIENT } from './types';
 
 export const addIngredientAction = (ingredient) => ({
   type: ADD_INGREDIENT,

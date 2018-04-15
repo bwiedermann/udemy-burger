@@ -1,4 +1,4 @@
-import * as actions from './actions';
+import { ADD_INGREDIENT, REMOVE_INGREDIENT } from '../actions/types';
 
 /** we store ingredients and the total price */
 const initialState = {
@@ -57,10 +57,10 @@ const changeIngredient = (state, ingredient, num) => {
 export default (state = initialState, action) => {
   switch (action.type) {
 
-    case actions.ADD_INGREDIENT:
+    case ADD_INGREDIENT:
       return changeIngredient(state, action.ingredient, 1);
 
-    case actions.REMOVE_INGREDIENT:
+    case REMOVE_INGREDIENT:
       return changeIngredient(state, action.ingredient, -1);
 
     default:
