@@ -1,9 +1,8 @@
 import React, { Component } from 'react'
-import { Form, Tab } from 'semantic-ui-react';
+import { Form, Tab, Message } from 'semantic-ui-react';
 import { connect } from 'react-redux';
 import * as actions from '../../store/actions/';
 import $ from 'jquery';
-import axios from 'axios';
 
 class Auth extends Component {
   state = {
@@ -120,4 +119,4 @@ const mapDispatchToProps = (dispatch) => ({
   onLogin: (email, password) => dispatch(actions.auth(email, password, false)),
 });
 
-export default connect(mapStateToProps, mapDispatchToProps)(Auth, axios);
+export default connect(mapStateToProps, mapDispatchToProps)(Auth);
