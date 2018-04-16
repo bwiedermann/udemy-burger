@@ -76,12 +76,18 @@ class Auth extends Component {
           value={value} />
       );
     }
+
+    const formProps = {
+      formItems: formItems,
+      onAuth: this.onAuth,
+      errorMessage: this.props.error && this.props.error.message,
+    }
     const panes = [
       {
         menuItem: 'Login',
         render: () => (
           <Tab.Pane loading = {this.props.loading}>
-            <AuthForm isRegister={false} formItems={formItems} onAuth={this.onAuth} />
+            <AuthForm isRegister={false} {...formProps} />
           </Tab.Pane>
         ),
       },
@@ -89,7 +95,7 @@ class Auth extends Component {
           menuItem: 'Register', 
           render: () => (
             <Tab.Pane loading = {this.state.loading}>
-              <AuthForm isRegister={true} formItems={formItems} onAuth={this.onAuth} />
+              <AuthForm isRegister={true} {...formProps} />
             </Tab.Pane>
           ),
       }
@@ -99,12 +105,13 @@ class Auth extends Component {
 }
 
 const AuthForm = (props) => (
-  <Form id={"AuthForm" + props.isRegister ? 'Register' : 'Login'}>
+  <Form id={"AuthForm" + props.isRegister ? 'Register' : 'Login'} error>
     {props.formItems}
     <Form.Button
       onClick={(event) => props.onAuth(event, props.isRegister)}
       type='submit'
       content={props.isRegister ? 'Register' : 'Login'} />
+    {props.errorMessage ? <Message error content={props.errorMessage} /> : null}
   </Form>
 );
 
@@ -112,6 +119,7 @@ const mapStateToProps = (state) => ({
   token: state.auth.token,
   userId: state.auth.userId,
   loading: state.auth.loading,
+  error: state.auth.error,
 })
 
 const mapDispatchToProps = (dispatch) => ({

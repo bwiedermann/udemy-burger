@@ -31,6 +31,6 @@ export const auth = (email, password, isRegister) => (dispatch) => {
                : `https://www.googleapis.com/identitytoolkit/v3/relyingparty/verifyPassword?key=${API_KEY}`;
   axios.post(url, authData)
        .then(response => dispatch(authSuccess(response.data.idToken, response.data.localId)))
-       .catch(error => dispatch(authFail(error)));
+       .catch(error => dispatch(authFail(error.response.data.error)));
 }
 
