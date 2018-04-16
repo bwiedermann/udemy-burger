@@ -120,4 +120,4 @@ const mapDispatchToProps = (dispatch) => ({
   onLogin: (email, password) => dispatch(actions.auth(email, password, false)),
 });
 
-export default connect(mapStateToProps, mapDispatchToProps)(withErrorHandler(Auth, axios));
+export default connect(mapStateToProps, mapDispatchToProps)(Auth, axios);
