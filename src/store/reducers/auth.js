@@ -19,7 +19,10 @@ export default (state = initialState, action) => {
   case actionTypes.AUTH_FAIL:
     return { ...state, token: null, userId: null, error: action.error, loading: false};
 
-  default:
+  case actionTypes.AUTH_LOGOUT:
+    return { ...state, ...initialState };
+
+      default:
     return state
   }
 }
