@@ -4,7 +4,6 @@ import { connect } from 'react-redux';
 import * as actions from '../../store/actions/';
 import $ from 'jquery';
 import axios from 'axios';
-import withErrorHandler from '../../components/withErrorHandler/withErrorHandler';
 
 class Auth extends Component {
   state = {
@@ -27,7 +26,6 @@ class Auth extends Component {
         value: 'password'
       },
     },
-    loading: false,
   };
 
   onAuth = (event, isRegister) => {
@@ -83,7 +81,7 @@ class Auth extends Component {
       {
         menuItem: 'Login',
         render: () => (
-          <Tab.Pane loading = {this.state.loading}>
+          <Tab.Pane loading = {this.props.loading}>
             <AuthForm isRegister={false} formItems={formItems} onAuth={this.onAuth} />
           </Tab.Pane>
         ),
@@ -112,7 +110,9 @@ const AuthForm = (props) => (
 );
 
 const mapStateToProps = (state) => ({
-  
+  token: state.auth.token,
+  userId: state.auth.userId,
+  loading: state.auth.loading,
 })
 
 const mapDispatchToProps = (dispatch) => ({

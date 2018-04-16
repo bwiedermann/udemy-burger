@@ -7,9 +7,10 @@ export const authStart = () => ({
   type: actionTypes.AUTH_START,  
 });
 
-export const authSuccess = (data) => ({
+export const authSuccess = (idToken, localId) => ({
   type: actionTypes.AUTH_SUCCESS,
-  data: data,
+  token: idToken,
+  userId: localId,
 });
 
 export const authFail = (error) => ({
@@ -29,7 +30,7 @@ export const auth = (email, password, isRegister) => (dispatch) => {
     isRegister ? `https://www.googleapis.com/identitytoolkit/v3/relyingparty/signupNewUser?key=${API_KEY}`
                : `https://www.googleapis.com/identitytoolkit/v3/relyingparty/verifyPassword?key=${API_KEY}`;
   axios.post(url, authData)
-       .then(response => dispatch(authSuccess(response.data)))
+       .then(response => dispatch(authSuccess(response.data.idToken, response.data.localId)))
        .catch(error => dispatch(authFail(error)));
 }
 
