@@ -1,26 +1,21 @@
 import React, { Component } from 'react'
-import { Form, Segment } from 'semantic-ui-react';
+import { Form, Tab } from 'semantic-ui-react';
+import { connect } from 'react-redux';
+import * as actions from '../../store/actions/';
 import $ from 'jquery';
+import axios from 'axios';
+import withErrorHandler from '../../components/withErrorHandler/withErrorHandler';
 
 class Auth extends Component {
   state = {
     form: {
-      name: {
-        elementConfig: {
-          type: 'text',
-          pattern: ".+",
-          placeholder: 'Your name',
-          required: true,
-        },
-        value: 'Fake customer'
-      },
       email: {
         elementConfig: {
           type: 'email',
           placeholder: 'a@a.com',
           required: true,
         },
-        value: 'fake@fake.com'
+        value: 'test@test.com'
       },
       password: {
         elementConfig: {
@@ -35,8 +30,9 @@ class Auth extends Component {
     loading: false,
   };
 
-  orderHandler = (event) => {
-    if (!this.formIsValid()) {
+  onAuth = (event, isRegister) => {
+    const formID = 'AuthForm' + isRegister ? 'Register' : 'Login';
+    if (!this.formIsValid(formID)) {
       return;
     }
 
@@ -47,18 +43,19 @@ class Auth extends Component {
     for (let formID in this.state.form) {
       formData[formID] = this.state.form[formID].value;
     }
-    console.log(formData);
-    // const order = {
-    //   ingredients: this.props.ingredients,
-    //   price: this.props.totalPrice,  // should calculate on server
-    //   customer: formData,
-    // }
+
+    if (isRegister) {
+      this.props.onRegister(formData.email, formData.password);
+    } else {
+      this.props.onLogin(formData.email, formData.password);
+
+    }
 
     // this.props.onOrderBurger(order);
     this.setState({ loading: false });
   }
 
-  formIsValid = () => $('#AuthForm')[0].checkValidity();
+  formIsValid = (id) => $('#'+id)[0].checkValidity();
 
   inputChangedHandler = (event, inputIdentifier) => {
     const newForm = { ...this.state.form };
@@ -82,22 +79,45 @@ class Auth extends Component {
           value={value} />
       );
     }
-    return (
-      <Segment raised compact loading = {this.state.loading}>
-        {/* <Dimmer active={this.props.loading} inverted>
-          <Loader>Ordering</Loader>
-        </Dimmer> */}
-        <h4>Please sign in</h4>
-        <Form id="AuthForm">
-          {formItems}
-          <Form.Button
-            onClick={this.orderHandler}
-            type='submit'
-            content='Sign in' />
-        </Form>
-      </Segment>
-    )
+    const panes = [
+      {
+        menuItem: 'Login',
+        render: () => (
+          <Tab.Pane loading = {this.state.loading}>
+            <AuthForm isRegister={false} formItems={formItems} onAuth={this.onAuth} />
+          </Tab.Pane>
+        ),
+      },
+      {
+          menuItem: 'Register', 
+          render: () => (
+            <Tab.Pane loading = {this.state.loading}>
+              <AuthForm isRegister={true} formItems={formItems} onAuth={this.onAuth} />
+            </Tab.Pane>
+          ),
+      }
+    ]
+    return <Tab panes={panes} />;
   }
 }
 
-export default Auth;
+const AuthForm = (props) => (
+  <Form id={"AuthForm" + props.isRegister ? 'Register' : 'Login'}>
+    {props.formItems}
+    <Form.Button
+      onClick={(event) => props.onAuth(event, props.isRegister)}
+      type='submit'
+      content={props.isRegister ? 'Register' : 'Login'} />
+  </Form>
+);
+
+const mapStateToProps = (state) => ({
+  
+})
+
+const mapDispatchToProps = (dispatch) => ({
+  onRegister: (email, password) => dispatch(actions.auth(email, password, true)),
+  onLogin: (email, password) => dispatch(actions.auth(email, password, false)),
+});
+
+export default connect(mapStateToProps, mapDispatchToProps)(withErrorHandler(Auth, axios));
