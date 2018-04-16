@@ -8,6 +8,9 @@ const NavigationItems = (props) => {
       <Menu.Item as={NavLink} exact to="/">
         Burger Builder
       </Menu.Item>
+      <Menu.Item as={NavLink} exact to="/auth">
+        Sign in
+      </Menu.Item>
       <Menu.Item as={NavLink} exact to="/orders">
         Orders
       </Menu.Item>
