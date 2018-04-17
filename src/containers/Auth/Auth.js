@@ -1,6 +1,7 @@
 import React, { Component } from 'react'
 import { Form, Tab, Message } from 'semantic-ui-react';
 import { connect } from 'react-redux';
+import { withRouter } from 'react-router-dom';
 import * as actions from '../../store/actions/';
 import $ from 'jquery';
 
@@ -26,6 +27,19 @@ class Auth extends Component {
       },
     },
   };
+
+  componentDidMount() {
+    if (this.props.isAuthenticated) {
+      this.props.history.replace("/");
+    }
+  }
+
+  componentWillUpdate(newProps) {
+    if (newProps.isAuthenticated) {
+      newProps.history.replace("/");
+    }
+  }
+
 
   onAuth = (event, isRegister) => {
     const formID = 'AuthForm' + isRegister ? 'Register' : 'Login';
@@ -116,10 +130,10 @@ const AuthForm = (props) => (
 );
 
 const mapStateToProps = (state) => ({
-  token: state.auth.token,
   userId: state.auth.userId,
   loading: state.auth.loading,
   error: state.auth.error,
+  isAuthenticated: state.auth.token != null,
 })
 
 const mapDispatchToProps = (dispatch) => ({
@@ -127,4 +141,4 @@ const mapDispatchToProps = (dispatch) => ({
   onLogin: (email, password) => dispatch(actions.auth(email, password, false)),
 });
 
-export default connect(mapStateToProps, mapDispatchToProps)(Auth);
+export default connect(mapStateToProps, mapDispatchToProps)(withRouter(Auth));
