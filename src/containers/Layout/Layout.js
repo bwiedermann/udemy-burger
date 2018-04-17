@@ -29,7 +29,7 @@ class Layout extends Component {
 }
 
 const mapStateToProps = (state) => ({
-  loggedIn: state.auth.token == null,
+  loggedIn: state.auth.token != null,
 })
 
 

@@ -3,12 +3,12 @@ import { Menu } from 'semantic-ui-react';
 import { NavLink } from 'react-router-dom';
 
 const NavigationItems = (props) => {
-  const authLink = props.loggedIn ? 
-    <Menu.Item as={NavLink} exact to="/auth">
-      Sign in
-    </Menu.Item>
-    : <Menu.Item as={NavLink} exact to="/logout">
-      Logout
+  const authLink = props.loggedIn
+    ? <Menu.Item as={NavLink} exact to="/logout">
+        Logout
+      </Menu.Item>
+    :  <Menu.Item as={NavLink} exact to="/auth">
+        Sign in
       </Menu.Item>
   return (
     <Fragment>
