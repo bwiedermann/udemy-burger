@@ -3,24 +3,19 @@ import { Menu } from 'semantic-ui-react';
 import { NavLink } from 'react-router-dom';
 
 const NavigationItems = (props) => {
-  const authLink = props.loggedIn
-    ? <Menu.Item as={NavLink} exact to="/logout">
-        Logout
-      </Menu.Item>
-    :  <Menu.Item as={NavLink} exact to="/auth">
-        Sign in
-      </Menu.Item>
   return (
     <Fragment>
-      <Menu.Item as={NavLink} exact to="/">
-        Burger Builder
-      </Menu.Item>
-      <Menu.Item as={NavLink} exact to="/orders">
-        Orders
-      </Menu.Item>
-      {authLink}
+      <NavigationItem title={"Burger Builder"} link={"/"} />
+      <NavigationItem title={"Orders"}  link={"/orders"} hide={!props.loggedIn} />
+      <NavigationItem title={"Sign In"} link={"/auth"}   hide={props.loggedIn} />
+      <NavigationItem title={"Logout"}  link={"/logout"} hide={!props.loggedIn} />
     </Fragment>
-  )
+  );
 }
+
+const NavigationItem = (props) => (
+  props.hide ? null 
+             : <Menu.Item as={NavLink} exact to={props.link}>{props.title}</Menu.Item>
+);
 
 export default NavigationItems
