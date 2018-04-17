@@ -84,7 +84,7 @@ class Auth extends Component {
     }
     const panes = [
       {
-        menuItem: 'Login',
+        menuItem: 'Sign in',
         render: () => (
           <Tab.Pane loading = {this.props.loading}>
             <AuthForm isRegister={false} {...formProps} />
@@ -105,12 +105,12 @@ class Auth extends Component {
 }
 
 const AuthForm = (props) => (
-  <Form id={"AuthForm" + props.isRegister ? 'Register' : 'Login'} error>
+  <Form id={"AuthForm" + props.isRegister ? 'Register' : 'Sign in'} error>
     {props.formItems}
     <Form.Button
       onClick={(event) => props.onAuth(event, props.isRegister)}
       type='submit'
-      content={props.isRegister ? 'Register' : 'Login'} />
+      content={props.isRegister ? 'Register' : 'Sign in'} />
     {props.errorMessage ? <Message error content={props.errorMessage} /> : null}
   </Form>
 );
