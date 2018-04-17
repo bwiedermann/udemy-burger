@@ -30,13 +30,14 @@ class Auth extends Component {
 
   componentDidMount() {
     if (this.props.isAuthenticated) {
-      this.props.history.replace("/");
+      this.props.history.push("/");
     }
   }
 
   componentWillUpdate(newProps) {
     if (newProps.isAuthenticated) {
-      newProps.history.replace("/");
+      const nextPage = this.props.orderInProgress ? "/checkout" : "/";
+      this.props.history.push(nextPage);
     }
   }
 
@@ -134,6 +135,7 @@ const mapStateToProps = (state) => ({
   loading: state.auth.loading,
   error: state.auth.error,
   isAuthenticated: state.auth.token != null,
+  orderInProgress: state.burgerBuilder.orderInProgress,
 })
 
 const mapDispatchToProps = (dispatch) => ({

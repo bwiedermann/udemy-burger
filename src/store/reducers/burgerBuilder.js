@@ -10,6 +10,7 @@ const initialState = {
   ingredients: null,
   totalPrice: 4,
   error: false,
+  orderInProgress: false,  
 };
 
 /** the prices for each ingredient */
@@ -57,7 +58,12 @@ const changeIngredient = (state, ingredient, num) => {
   // compute a new price
   const newPrice = computePrice(newIngredients);
 
-  return {...state, ingredients: newIngredients, totalPrice: newPrice};
+  return {
+    ...state, 
+    ingredients: newIngredients, 
+    totalPrice: newPrice, 
+    orderInProgress: newPrice > initialState.totalPrice, // HACK
+  };
 }
 
 

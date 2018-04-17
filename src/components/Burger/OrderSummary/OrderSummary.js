@@ -24,7 +24,7 @@ class OrderSummary extends Component {
         onClose={this.props.purchaseCanceled}
         trigger={
           <Button disabled={!this.props.purchasable} onClick={this.props.order}>
-            Order Now
+            {this.props.isAuthenticated ? 'Order Now' : 'Sign in to Order'  }
           </Button>}>
         <Modal.Header>Your Order</Modal.Header>
         <Modal.Content>
