@@ -1,6 +1,7 @@
 import React, { Component } from 'react'
 import { Form, Tab, Message } from 'semantic-ui-react';
 import { connect } from 'react-redux';
+import { withRouter } from 'react-router-dom';
 import * as actions from '../../store/actions/';
 import $ from 'jquery';
 
@@ -26,6 +27,20 @@ class Auth extends Component {
       },
     },
   };
+
+  componentDidMount() {
+    if (this.props.isAuthenticated) {
+      this.props.history.push("/");
+    }
+  }
+
+  componentWillUpdate(newProps) {
+    if (newProps.isAuthenticated) {
+      const nextPage = this.props.orderInProgress ? "/checkout" : "/";
+      this.props.history.push(nextPage);
+    }
+  }
+
 
   onAuth = (event, isRegister) => {
     const formID = 'AuthForm' + isRegister ? 'Register' : 'Login';
@@ -84,7 +99,7 @@ class Auth extends Component {
     }
     const panes = [
       {
-        menuItem: 'Login',
+        menuItem: 'Sign in',
         render: () => (
           <Tab.Pane loading = {this.props.loading}>
             <AuthForm isRegister={false} {...formProps} />
@@ -105,21 +120,22 @@ class Auth extends Component {
 }
 
 const AuthForm = (props) => (
-  <Form id={"AuthForm" + props.isRegister ? 'Register' : 'Login'} error>
+  <Form id={"AuthForm" + props.isRegister ? 'Register' : 'Sign in'} error>
     {props.formItems}
     <Form.Button
       onClick={(event) => props.onAuth(event, props.isRegister)}
       type='submit'
-      content={props.isRegister ? 'Register' : 'Login'} />
+      content={props.isRegister ? 'Register' : 'Sign in'} />
     {props.errorMessage ? <Message error content={props.errorMessage} /> : null}
   </Form>
 );
 
 const mapStateToProps = (state) => ({
-  token: state.auth.token,
   userId: state.auth.userId,
   loading: state.auth.loading,
   error: state.auth.error,
+  isAuthenticated: state.auth.token != null,
+  orderInProgress: state.burgerBuilder.orderInProgress,
 })
 
 const mapDispatchToProps = (dispatch) => ({
@@ -127,4 +143,4 @@ const mapDispatchToProps = (dispatch) => ({
   onLogin: (email, password) => dispatch(actions.auth(email, password, false)),
 });
 
-export default connect(mapStateToProps, mapDispatchToProps)(Auth);
+export default connect(mapStateToProps, mapDispatchToProps)(withRouter(Auth));
