@@ -8,7 +8,7 @@ import { connect } from 'react-redux';
 
 export class Orders extends Component {
   componentDidMount() {
-    this.props.onFetchOrders(this.props.token);
+    this.props.onFetchOrders(this.props.token, this.props.userId);
   }
 
   render() {
@@ -21,7 +21,8 @@ export class Orders extends Component {
           this.props.orders.map(order => 
             <Order key={order.id} 
                    ingredients={order.ingredients} 
-                   price={order.price} />
+                   price={order.price} 
+                   user={order.userId}/>
           )
         }
       </Fragment>
@@ -33,10 +34,11 @@ const mapStateToProps = (state) => ({
   orders: state.order.orders,
   loading: state.order.loading,
   token: state.auth.token,
+  userId: state.auth.userId,
 });
 
 const mapDispatchToProps = (dispatch) => ({
-  onFetchOrders: (token) => dispatch(actions.fetchOrders(token)),
+  onFetchOrders: (token, userId) => dispatch(actions.fetchOrders(token, userId)),
 });
 
 export default connect(mapStateToProps, mapDispatchToProps)(withErrorHandler(Orders, axios));
