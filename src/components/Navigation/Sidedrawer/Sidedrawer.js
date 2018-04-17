@@ -12,7 +12,7 @@ const Sidedrawer = (props) => {
         icon='labeled'
         vertical
         inverted>
-        <NavigationItems />
+        <NavigationItems loggedIn={props.loggedIn}/>
       </Sidebar>
   );
 }

@@ -10,7 +10,7 @@ const Toolbar = (props) => {
         <Logo size="mini" />
       </Menu.Item>
       <Menu.Menu position="right">
-        <NavigationItems />
+        <NavigationItems loggedIn={props.loggedIn} />
       </Menu.Menu>
     </Menu>
   )
